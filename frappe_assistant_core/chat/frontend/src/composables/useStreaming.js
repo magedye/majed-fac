@@ -61,9 +61,9 @@ function initializeSpaSocket(chatStore) {
 		const port = window.frappe?.boot?.socketio_port || window.socketio_port || 9000;
 		socketUrl = `${protocol}//${host}:${port}/${siteName}`;
 	} else {
-		// Production (Frappe Cloud): Socket goes through nginx proxy on standard port
-		// No explicit port needed - nginx routes /socket.io/* to internal socketio server
-		socketUrl = `${protocol}//${host}/${siteName}`;
+		// Production: preserve the current host and port; nginx proxies /socket.io
+		// to the internal Socket.IO service.
+		socketUrl = `${protocol}//${window.location.host}/${siteName}`;
 	}
 
 	logger.debug("Connecting to socket:", socketUrl);
